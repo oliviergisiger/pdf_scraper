@@ -1,4 +1,5 @@
 import os
+import shutil
 import streamlit as st
 from scraper import WebPage, WebPageError
 from utils import make_zip
@@ -24,6 +25,11 @@ with col2:
 if go:
     if not url:
         st.warning('Please enter a valid URL.')
+
+    if os.path.exists(TEMP_DIR):
+        shutil.rmtree(TEMP_DIR)
+    os.makedirs(TEMP_DIR, exist_ok=True)
+
     try:
         page = WebPage(url)
         pdf_links = page.get_pdf_urls()
