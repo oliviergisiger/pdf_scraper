@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 from scraper import WebPage
+from utils import make_zip
 
 
 
@@ -42,4 +43,11 @@ if go:
                 page.download_pdf(ref, directory)
                 progress_bar.progress(i / total)
 
-            st.success(f'saved to: `{os.path.abspath(directory)}`')
+
+            zip_buffer = make_zip(directory)
+            st.download_button(
+                label='download .zip',
+                data=zip_buffer,
+                file_name='pdfs.zip',
+                mime='application/zip'
+            )
