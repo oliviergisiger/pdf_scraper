@@ -10,6 +10,10 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36'
 }
 
+class WebPageError(Exception):
+    """Custom exception for web page errors."""
+    pass
+
 class WebPage:
 
 
@@ -39,7 +43,7 @@ class WebPage:
         response = requests.get(url, headers=headers)
         if not response.ok:
             logging.error(response.status_code, response.text)
-            return
+            raise WebPageError(f'Website not reachable: {response.status_code}')
         return BeautifulSoup(response.content, 'html.parser')
 
 

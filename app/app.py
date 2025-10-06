@@ -1,6 +1,6 @@
 import os
 import streamlit as st
-from scraper import WebPage
+from scraper import WebPage, WebPageError
 from utils import make_zip
 
 TEMP_DIR = 'temp_pdfs'
@@ -24,9 +24,12 @@ with col2:
 if go:
     if not url:
         st.warning('Please enter a valid URL.')
-
-    page = WebPage(url)
-    pdf_links = page.get_pdf_urls()
+    try:
+        page = WebPage(url)
+        pdf_links = page.get_pdf_urls()
+    except WebPageError as e:
+        st.error(e)
+        st.stop()
     if not pdf_links:
         st.warning('no pdfs found.')
 
